@@ -1,7 +1,7 @@
-const MOVE = "MOVE";
-const JUMP_TO = "JUMP_TO";
+export const MOVE = "MOVE";
+export const JUMP_TO = "JUMP_TO";
 
-const move = (index) => {
+export const move = (index) => {
     return {
         type: MOVE,
         payload: { index }
@@ -9,7 +9,7 @@ const move = (index) => {
 }
 
 
-const jumpTo = (step) => {
+export const jumpTo = (step) => {
     return {
         type: JUMP_TO,
         payload: { step }
