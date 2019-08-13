@@ -14,12 +14,10 @@ function Game(props) {
         return dispatch(jumpTo(step));
     }
 
-    const history = useSelector(state => state.history);
-    const stepNumber = useSelector(state => state.stepNumber);
-    const current = history[stepNumber];
-    const xIsNext = useSelector(state => state.xIsNext);
+    const game = useSelector(state => state.game);
+    const current = game.history[game.stepNumber];
 
-    const moves = history.map((step, move) => {
+    const moves = game.history.map((step, move) => {
         const desc = move ?
             'Go to move #' + move :
             'Go to game start';
@@ -34,7 +32,7 @@ function Game(props) {
     if (current.winner) {
         status = "Winner: " + current.winner;
     } else {
-        status = "Next player: " + (xIsNext ? "X" : "O");
+        status = "Next player: " + (game.xIsNext ? "X" : "O");
     }
 
     return (
