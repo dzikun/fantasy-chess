@@ -4,7 +4,7 @@ import { MOVE, JUMP_TO } from "../actions";
 const initialState = {
     history: [
         {
-            squares: Array(9).fill(null),
+            squares: Array(64).fill(null),
             winner: null
         }
     ],

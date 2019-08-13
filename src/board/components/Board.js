@@ -11,8 +11,8 @@ function Board(props) {
         return (
             <Square
                 key={i}
+                index={i}
                 value={props.squares[i]}
-                onClick={() => props.onClick(i)}
             />
         );
     };
