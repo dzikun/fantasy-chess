@@ -9,7 +9,8 @@ import { MOVE, JUMP_TO } from "../actions";
 const initialState = {
     history: [
         {
-            squares: Array(9).fill(null)
+            squares: Array(9).fill(null),
+            winner: null
         }
     ],
     stepNumber: 0,
@@ -25,7 +26,7 @@ export default function (state = initialState, action) {
             const history = state.history.slice(0, state.stepNumber + 1);
             const current = history[history.length - 1];
             const squares = current.squares.slice();
-            if (state.winner || squares[index]) {
+            if (current.winner || squares[index]) {
                 return state;
             }
             squares[index] = state.xIsNext ? "X" : "O";
@@ -34,25 +35,21 @@ export default function (state = initialState, action) {
                 ...state,
                 history: history.concat([
                     {
-                        squares: squares
+                        squares: squares,
+                        winner: winner
                     }
                 ]),
                 stepNumber: history.length,
-                xIsNext: !state.xIsNext,
-                winner: winner
+                xIsNext: !state.xIsNext
             };
         }
 
         case JUMP_TO: {
             const { step } = action.payload;
-            const current = state.history[step];
-            const squares = current.squares.slice();
-            const winner = calculateWinner(squares);
             return {
                 ...state,
                 stepNumber: step,
-                xIsNext: (step % 2) === 0,
-                winner: winner
+                xIsNext: (step % 2) === 0
             };
         }
         default:

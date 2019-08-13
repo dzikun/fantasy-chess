@@ -17,7 +17,6 @@ function Game(props) {
     const history = useSelector(state => state.history);
     const stepNumber = useSelector(state => state.stepNumber);
     const current = history[stepNumber];
-    const winner = useSelector(state => state.winner);
     const xIsNext = useSelector(state => state.xIsNext);
 
     const moves = history.map((step, move) => {
@@ -32,8 +31,8 @@ function Game(props) {
     });
 
     let status;
-    if (winner) {
-        status = "Winner: " + winner;
+    if (current.winner) {
+        status = "Winner: " + current.winner;
     } else {
         status = "Next player: " + (xIsNext ? "X" : "O");
     }
