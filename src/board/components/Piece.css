@@ -1,5 +1,5 @@
 
-.square {
+.piece {
     background: #fff;
     border: 1px solid #999;
     float: left;
@@ -14,11 +14,15 @@
     width: 34px;
   }
 
-  .square:focus {
+  .selected {
+    background: #0f0;
+  }
+  
+  .piece:focus {
     outline: none;
   }
   
-  .kbd-navigation .square:focus {
+  .kbd-navigation .piece:focus {
     background: #ddd;
   }
   

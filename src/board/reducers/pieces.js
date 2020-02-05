@@ -1,25 +1,27 @@
-import _ from 'lodash';
+import { CLICKED, SELECTED } from "../actions";
 
-import { CLICKED } from "../actions";
+const initialState = () => {
+    return {
+        selected: [],
+        pieces: [{ name: 'P', selected: false },
+        { name: 'K', selected: false },
+        { name: 'P', selected: false }]
+    };
+}
 
-const initialState = {
-    selected: [],
-    pieces: [{ name: 'P', selected: false },
-    { name: 'K', selected: false },
-    { name: 'P', selected: false }]
-};
-
-export default function (state = initialState, action) {
+export default function (state = initialState(), action) {
     switch (action.type) {
+        case SELECTED: {
+            const { index } = action.payload;
+            const pieces = toggleSelect(state.pieces, index);
+            return {
+                ...state,
+                pieces: pieces
+            }
+        }
         case CLICKED: {
             const { index } = action.payload;
-            let pieces = state.pieces;
-            let piece = pieces[index];
-            if (piece) {
-                pieces = toggleSelect(pieces, index);
-            } else {
-                pieces = moveSelected(pieces, index);
-            }
+            const pieces = moveSelected(state.pieces, index);
             return {
                 ...state,
                 pieces: pieces
@@ -34,20 +36,24 @@ export default function (state = initialState, action) {
 function toggleSelect(pieces, index) {
     const result = [...pieces];
     result[index] = {
-        ...result[index],
-        selected: !result[index].selected
+        ...pieces[index],
+        selected: !pieces[index].selected
     }
     return result;
 }
 
 function moveSelected(pieces, index) {
     const result = [...pieces];
-    let moved = 0;
+
     pieces
         .forEach((p, i) => {
             if (p && p.selected) {
+                let target = index;
+                while (result[target] && i !== target) {
+                    target++;
+                }
                 result.splice(i, 1, null);
-                result[index + (moved++)] = p;
+                result[target] = p;
             }
         });
 
