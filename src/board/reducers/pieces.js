@@ -1,45 +1,43 @@
-import { CLICKED, SELECTED } from "../actions";
+import { SELECTION_START, SELECTION_END, MOVE, TOUCH } from "../actions";
 
 const initialState = () => {
     return {
-        selected: [],
-        pieces: [{ name: 'P', selected: false },
-        { name: 'K', selected: false },
-        { name: 'P', selected: false }]
+        pieces: [
+            { name: 'P', selected: false },
+            { name: 'K', selected: false },
+            { name: 'P', selected: false }],
+        selectionStart: null
     };
 }
 
 export default function (state = initialState(), action) {
     switch (action.type) {
-        case SELECTED: {
+        case MOVE: {
             const { index } = action.payload;
-            const pieces = toggleSelect(state.pieces, index);
             return {
                 ...state,
-                pieces: pieces
+                pieces: moveSelected(state.pieces, index)
             }
         }
-        case CLICKED: {
+        case SELECTION_START: {
             const { index } = action.payload;
-            const pieces = moveSelected(state.pieces, index);
             return {
                 ...state,
-                pieces: pieces
+                selectionStart: index
+            }
+        }
+        case SELECTION_END: {
+            const { index } = action.payload;
+            return {
+                ...state,
+                selectionStart: null,
+                pieces: selectBox(state.pieces, state.selectionStart, index)
             }
         }
         default:
             return state;
     }
 
-}
-
-function toggleSelect(pieces, index) {
-    const result = [...pieces];
-    result[index] = {
-        ...pieces[index],
-        selected: !pieces[index].selected
-    }
-    return result;
 }
 
 function moveSelected(pieces, index) {
@@ -58,4 +56,12 @@ function moveSelected(pieces, index) {
         });
 
     return result;
+}
+
+function selectBox(pieces, start, end) {
+    return pieces.map((p, i) => {
+        return p
+            ? { ...p, selected: ((start <= i && i <= end) || (end <= i && i <= start)) }
+            : p;
+    });
 }

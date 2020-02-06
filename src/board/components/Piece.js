@@ -1,7 +1,7 @@
 import React from 'react';
 import './Piece.css';
 import { useDispatch } from 'react-redux';
-import { selected } from '../actions'
+import { touch } from '../actions'
 
 function Piece(props) {
     const piece = props.piece;
@@ -15,7 +15,7 @@ function Piece(props) {
 
     const dispatch = useDispatch()
     const handleClick = () => {
-        dispatch(selected(props.index));
+        dispatch(touch(props.index));
     }
 
     return (

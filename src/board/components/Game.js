@@ -1,8 +1,7 @@
 import React from 'react';
 import './Game.css';
 import Board from './Board';
-import { useDispatch, useSelector } from 'react-redux';
-import { move, jumpTo, clicked } from '../actions';
+import { useSelector } from 'react-redux';
 
 function Game(props) {
     const game = useSelector(state => state.game);

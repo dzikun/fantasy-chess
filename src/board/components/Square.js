@@ -1,7 +1,7 @@
 import React from 'react';
 import './Square.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { clicked } from '../actions'
+import { move, selectionStart, selectionEnd } from '../actions'
 import Piece from './Piece'
 
 function Square(props) {
@@ -11,14 +11,37 @@ function Square(props) {
         : null;
 
     const dispatch = useDispatch()
+
     const handleRightClick = (e) => {
         e.preventDefault();
-        dispatch(clicked(props.index));
+        e.stopPropagation();
+        dispatch(move(props.index));
         return false;
     }
 
+    const handleMouseDown = (e) => {
+        if (e.button !== 0) {
+            return;
+        }
+        e.preventDefault();
+        e.stopPropagation();
+        dispatch(selectionStart(props.index));
+    }
+
+    const handleMouseUp = (e) => {
+        if (e.button !== 0) {
+            return;
+        }
+        e.preventDefault();
+        e.stopPropagation();
+        dispatch(selectionEnd(props.index));
+    }
+
     return (
-        <div className="square" onContextMenu={handleRightClick}>
+        <div className="square"
+                onContextMenu={handleRightClick} 
+                onMouseDown={handleMouseDown}
+                onMouseUp={handleMouseUp}>
             {pieceComponent}
         </div>
     );

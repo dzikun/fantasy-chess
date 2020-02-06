@@ -1,8 +1,8 @@
 export const MOVE = "MOVE";
-export const JUMP_TO = "JUMP_TO";
-export const SELECTION_TOGGLE = "SELECTION_TOGGLE";
-export const CLICKED = "CLICKED";
-export const SELECTED = "SELECTED";
+export const SELECTION_START = "SELECTION_START";
+export const SELECTION_END = "SELECTION_END";
+export const TOUCH = "TOUCH";
+
 
 export const move = (index) => {
     return {
@@ -11,30 +11,23 @@ export const move = (index) => {
     }
 }
 
-export const jumpTo = (step) => {
+export const selectionStart = (index) => {
     return {
-        type: JUMP_TO,
-        payload: { step }
+        type: SELECTION_START,
+        payload: { index }
     }
 }
 
-export const selectionToggle = (i) => {
+export const selectionEnd = (index) => {
     return {
-        type: SELECTION_TOGGLE,
-        payload: { index: i }
+        type: SELECTION_END,
+        payload: { index }
     }
 }
 
-export const clicked = (i) => {
+export const touch = (index) => {
     return {
-        type: CLICKED,
-        payload: { index: i }
-    }
-}
-
-export const selected = (i) => {
-    return {
-        type: SELECTED,
-        payload: { index: i }
+        type: TOUCH,
+        payload: { index }
     }
 }

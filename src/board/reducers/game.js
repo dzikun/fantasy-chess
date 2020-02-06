@@ -1,5 +1,5 @@
 
-import { MOVE, JUMP_TO } from "../actions";
+import { MOVE } from "../actions";
 
 const initialState = {
     history: [
@@ -39,6 +39,7 @@ export default function (state = initialState, action) {
             };
         }
 
+        /*
         case JUMP_TO: {
             const { step } = action.payload;
             return {
@@ -47,6 +48,7 @@ export default function (state = initialState, action) {
                 xIsNext: (step % 2) === 0
             };
         }
+        */
         default:
             return state;
     }
