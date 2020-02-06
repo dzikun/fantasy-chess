@@ -59,6 +59,9 @@ function moveSelected(pieces, index) {
 }
 
 function selectBox(pieces, start, end) {
+    if (start == null) {
+        return pieces;
+    }
     return pieces.map((p, i) => {
         return p
             ? { ...p, selected: ((start <= i && i <= end) || (end <= i && i <= start)) }
