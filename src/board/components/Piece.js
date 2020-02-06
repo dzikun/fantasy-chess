@@ -15,7 +15,7 @@ function Piece(props) {
 
     const dispatch = useDispatch()
     const handleClick = () => {
-        dispatch(touch(props.index));
+        dispatch(touch(props.index, props.point));
     }
 
     return (
@@ -24,6 +24,5 @@ function Piece(props) {
         </button>
     );
 }
-
 
 export default Piece;

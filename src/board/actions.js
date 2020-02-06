@@ -4,30 +4,30 @@ export const SELECTION_END = "SELECTION_END";
 export const TOUCH = "TOUCH";
 
 
-export const move = (index) => {
+export const move = (index, point) => {
     return {
         type: MOVE,
-        payload: { index }
+        payload: { index, point }
     }
 }
 
-export const selectionStart = (index) => {
+export const selectionStart = (index, point) => {
     return {
         type: SELECTION_START,
-        payload: { index }
+        payload: { index, point }
     }
 }
 
-export const selectionEnd = (index) => {
+export const selectionEnd = (index, point, shiftKey, ctrlKey, altKey) => {
     return {
         type: SELECTION_END,
-        payload: { index }
+        payload: { index, point, shiftKey, ctrlKey, altKey}
     }
 }
 
-export const touch = (index) => {
+export const touch = (index, point) => {
     return {
         type: TOUCH,
-        payload: { index }
+        payload: { index, point }
     }
 }

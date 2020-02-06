@@ -7,45 +7,42 @@ import Piece from './Piece'
 function Square(props) {
     const piece = useSelector(state => state.pieces.pieces[props.index]);
     const pieceComponent = piece
-        ? (<Piece piece={piece} index={props.index}/>)
+        ? (<Piece piece={piece} index={props.index} point={props.point}/>)
         : null;
 
     const dispatch = useDispatch()
 
-    const handleRightClick = (e) => {
+    const disableEvent = (e) => {
+        e.shiftKey = false;
         e.preventDefault();
         e.stopPropagation();
-        dispatch(move(props.index));
         return false;
     }
 
     const handleMouseDown = (e) => {
-        if (e.button !== 0) {
-            return;
+        if (e.button === 0) {
+            dispatch(selectionStart(props.index, props.point));
+        } else if (e.button === 2) {
+            dispatch(move(props.index, props.point));
         }
-        e.preventDefault();
-        e.stopPropagation();
-        dispatch(selectionStart(props.index));
+        return disableEvent(e);
     }
 
     const handleMouseUp = (e) => {
-        if (e.button !== 0) {
-            return;
+        if (e.button === 0) {
+            dispatch(selectionEnd(props.index, props.point, e.shiftKey, e.ctrlKey, e.altKey));
         }
-        e.preventDefault();
-        e.stopPropagation();
-        dispatch(selectionEnd(props.index));
+        return disableEvent(e);
     }
 
     return (
         <div className="square"
-                onContextMenu={handleRightClick} 
+                onContextMenu={disableEvent} 
                 onMouseDown={handleMouseDown}
                 onMouseUp={handleMouseUp}>
             {pieceComponent}
         </div>
     );
 }
-
 
 export default Square;
