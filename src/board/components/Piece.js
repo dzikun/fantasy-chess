@@ -15,7 +15,7 @@ function Piece(props) {
 
     const dispatch = useDispatch()
     const handleClick = () => {
-        dispatch(touch(props.index, props.point));
+        dispatch(touch(props.point));
     }
 
     return (

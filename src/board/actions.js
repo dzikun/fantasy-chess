@@ -3,31 +3,48 @@ export const SELECTION_START = "SELECTION_START";
 export const SELECTION_END = "SELECTION_END";
 export const TOUCH = "TOUCH";
 
+export const COMMAND_MOVE_SELECTED = "COMMAND_MOVE_SELECTED";
+export const COMMAND_MOVE = "COMMAND_MOVE";
 
-export const move = (index, point) => {
+
+export const move = (source, destination) => {
     return {
         type: MOVE,
-        payload: { index, point }
+        payload: { source, destination }
     }
 }
 
-export const selectionStart = (index, point) => {
+export const selectionStart = (point) => {
     return {
         type: SELECTION_START,
-        payload: { index, point }
+        payload: { point }
     }
 }
 
-export const selectionEnd = (index, point, shiftKey, ctrlKey, altKey) => {
+export const selectionEnd = (point, shiftKey, ctrlKey, altKey) => {
     return {
         type: SELECTION_END,
-        payload: { index, point, shiftKey, ctrlKey, altKey}
+        payload: { point, shiftKey, ctrlKey, altKey}
     }
 }
 
-export const touch = (index, point) => {
+export const touch = (point) => {
     return {
         type: TOUCH,
-        payload: { index, point }
+        payload: { point }
+    }
+}
+
+export const commandMoveSelected = (dest) => {
+    return {
+        type: COMMAND_MOVE_SELECTED,
+        payload: { dest: dest }
+    }
+}
+
+export const commandMove = (src, dest) => {
+    return {
+        type: COMMAND_MOVE,
+        payload: { src, dest }
     }
 }

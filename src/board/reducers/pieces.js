@@ -14,10 +14,10 @@ const initialState = () => {
 export default function (state = initialState(), action) {
     switch (action.type) {
         case MOVE: {
-            const { index } = action.payload;
+            const { source, destination } = action.payload;
             return {
                 ...state,
-                pieces: moveSelected(state.pieces, index)
+                pieces: move(state.pieces, source, destination)
             }
         }
         case SELECTION_START: {
@@ -41,22 +41,18 @@ export default function (state = initialState(), action) {
 
 }
 
-function moveSelected(pieces, index) {
+function move(pieces, source, destination) {
     const result = [...pieces];
-
-    pieces
-        .forEach((p, i) => {
-            if (p && p.selected) {
-                let target = index;
-                while (result[target] && i !== target) {
-                    target++;
-                }
-                result.splice(i, 1, null);
-                result[target] = p;
-            }
-        });
-
+    const sourceIndex = result.findIndex(p => p.point.x === source.x && p.point.y === source.y);
+    if (isDestinationValid(pieces, destination)) {
+        result[sourceIndex] = {...pieces[sourceIndex], point: destination}
+    }
     return result;
+}
+
+function isDestinationValid(pieces, destination) {
+    return true;
+    //return !pieces.some(p => p.point.x === destination.x && p.point.y === destination.y);
 }
 
 function selectBox(pieces, start, end, shiftKey) {
@@ -64,17 +60,15 @@ function selectBox(pieces, start, end, shiftKey) {
         return pieces;
     }
     if (shiftKey) {
-        return pieces.map((p, i) => {
-            const point = calculatePointFromIndex(i);
-            return p && isPointInBox(point, start, end)
+        return pieces.map(p => {
+            return p && isPointInBox(p.point, start, end)
                 ? { ...p, selected: !p.selected }
                 : p;
         });
     } else {
-        return pieces.map((p, i) => {
-            const point = calculatePointFromIndex(i);
+        return pieces.map(p => {
             return p
-                ? { ...p, selected: isPointInBox(point, start, end) }
+                ? { ...p, selected: isPointInBox(p.point, start, end) }
                 : p;
         });
     }
@@ -83,8 +77,4 @@ function selectBox(pieces, start, end, shiftKey) {
 function isPointInBox(point, start, end) {
     return ((start.x <= point.x && point.x <= end.x) || (end.x <= point.x && point.x <= start.x))
         && ((start.y <= point.y && point.y <= end.y) || (end.y <= point.y && point.y <= start.y));
-}
-
-function calculatePointFromIndex(index) {
-    return new Point(index % 8, Math.floor(index / 8));
 }

@@ -1,13 +1,13 @@
 import React from 'react';
 import './Square.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { move, selectionStart, selectionEnd } from '../actions'
+import { commandMoveSelected, selectionStart, selectionEnd } from '../actions'
 import Piece from './Piece'
 
 function Square(props) {
-    const piece = useSelector(state => state.pieces.pieces[props.index]);
+    const piece = useSelector(state => state.pieces.pieces.find(p => props.point.x === p.point.x && props.point.y === p.point.y));
     const pieceComponent = piece
-        ? (<Piece piece={piece} index={props.index} point={props.point}/>)
+        ? (<Piece piece={piece} point={props.point}/>)
         : null;
 
     const dispatch = useDispatch()
@@ -21,16 +21,16 @@ function Square(props) {
 
     const handleMouseDown = (e) => {
         if (e.button === 0) {
-            dispatch(selectionStart(props.index, props.point));
+            dispatch(selectionStart(props.point));
         } else if (e.button === 2) {
-            dispatch(move(props.index, props.point));
+            dispatch(commandMoveSelected(props.point));
         }
         return disableEvent(e);
     }
 
     const handleMouseUp = (e) => {
         if (e.button === 0) {
-            dispatch(selectionEnd(props.index, props.point, e.shiftKey, e.ctrlKey, e.altKey));
+            dispatch(selectionEnd(props.point, e.shiftKey, e.ctrlKey, e.altKey));
         }
         return disableEvent(e);
     }

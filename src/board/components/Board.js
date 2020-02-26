@@ -13,7 +13,6 @@ function Board(props) {
                 key={index}
                 index={index}
                 point={point}
-                value={props.squares[i]}
             />
         );
     };
