@@ -2,17 +2,17 @@ import React from 'react';
 import './Board.css';
 import Square from './Square';
 import { useSelector } from 'react-redux';
-
+import Point from '../model/Point'
 
 function Board(props) {
     const config = useSelector(state => state.config);
 
-    const renderSquare = (i) => {
+    const renderSquare = (index, point) => {
         return (
             <Square
-                key={i}
-                value={props.squares[i]}
-                onClick={() => props.onClick(i)}
+                key={index}
+                index={index}
+                point={point}
             />
         );
     };
@@ -22,7 +22,8 @@ function Board(props) {
     for (let y = 0; y < config.height; y++) {
         let line = [];
         for(let x = 0; x < config.width; x++) {
-            line.push(renderSquare(i++));
+            const point = new Point(x, y);
+            line.push(renderSquare(i++, point));
         }
         rows.push(<div key={y} className="board-row">{line}</div>);
     }

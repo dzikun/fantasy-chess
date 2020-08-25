@@ -1,6 +1,6 @@
 const initialState = {
-    width: 3,
-    height: 3
+    width: 8,
+    height: 8
 };
 
 export default function (state = initialState, action) {
