@@ -9,9 +9,9 @@ const initialState = () => {
         },
         board: Map(),
         pieces: Map() 
-            .set(1, { name: 'A', selected: false })
-            .set(2, { name: 'B', selected: false })
-            .set(3, { name: 'C', selected: false }),
+            .set(1, { id: 1, name: 'A', selected: false })
+            .set(2, { id: 2, name: 'B', selected: false })
+            .set(3, { id: 3, name: 'C', selected: false }),
 
         selectionStart: null,
         selected: Set()

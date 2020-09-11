@@ -10,7 +10,7 @@ function Piece(props) {
         : '';
 
     const selected = useSelector(state => state.map.selected.contains(piece.id));
-    const cssClass = (piece && props.selected)
+    const cssClass = (piece && selected)
         ? "piece selected"
         : "piece";
 

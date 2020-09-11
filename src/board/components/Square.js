@@ -11,11 +11,8 @@ function Square(props) {
     const piece = useSelector(state => square && square.occupied ?
         state.map.pieces.get(square.occupied)
         : null);
-    const pieceSelected = useSelector(state => piece ?
-        state.map.selected.toArray().includes(piece.id)
-        : false);
     const pieceComponent = piece
-        ? (<Piece piece={piece} point={props.point} selected={pieceSelected}/>)
+        ? (<Piece piece={piece} point={props.point} />)
         : null;
 
     const dispatch = useDispatch()
