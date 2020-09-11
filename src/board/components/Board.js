@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import Point from '../model/Point'
 
 function Board(props) {
-    const config = useSelector(state => state.config);
+    const config = useSelector(state => state.map.config);
 
     const renderSquare = (index, point) => {
         return (

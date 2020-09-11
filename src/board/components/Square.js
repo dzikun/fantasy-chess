@@ -5,9 +5,17 @@ import { commandMoveSelected, selectionStart, selectionEnd } from '../actions'
 import Piece from './Piece'
 
 function Square(props) {
-    const piece = useSelector(state => state.pieces.pieces.find(p => props.point.x === p.point.x && props.point.y === p.point.y));
+    //const piece = useSelector(state => state.pieces.pieces.find(p => props.point.x === p.point.x && props.point.y === p.point.y));
+    const squareKey = props.point.x + "," + props.point.y;
+    const square = useSelector(state => state.map.board.get(squareKey));
+    const piece = useSelector(state => square && square.occupied ?
+        state.map.pieces.get(square.occupied)
+        : null);
+    const pieceSelected = useSelector(state => piece ?
+        state.map.selected.toArray().includes(piece.id)
+        : false);
     const pieceComponent = piece
-        ? (<Piece piece={piece} point={props.point}/>)
+        ? (<Piece piece={piece} point={props.point} selected={pieceSelected}/>)
         : null;
 
     const dispatch = useDispatch()

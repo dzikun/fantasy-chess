@@ -1,5 +1,5 @@
 import { all, takeLatest, select, put, takeEvery, delay } from "redux-saga/effects";
-import { COMMAND_MOVE_SELECTED, COMMAND_MOVE, commandMove, move } from "../actions"
+import { COMMAND_MOVE_SELECTED, COMMAND_MOVE, commandMove, move, reserve } from "../actions"
 
 export function* gameSaga() {
     yield all([
@@ -9,12 +9,16 @@ export function* gameSaga() {
 }
 
 function* moveSelectedSaga(action) {
-    const selected = yield select(state => state.pieces.pieces.filter(p => p && p.selected))
-    yield all(selected.map(piece => put(commandMove(piece.point, action.payload.dest))))
+    const selectedIds = yield select(state => state.map.selected.toArray());
+    yield all(selectedIds
+        .filter(id => id !== null && id !== undefined)
+        .map(id => put(commandMove(id, action.payload.dest))))
 }
 
 function* movePieceSaga(action) {
-    const {src, dest} = action.payload;
+    const {id, dest} = action.payload;
+    const square = yield select(state => state.map.board.find(v => v.occupied === id));
+    const src = square.point;
     const vector = {
         x: dest.x - src.x,
         y: dest.y - src.y
@@ -28,19 +32,22 @@ function* movePieceSaga(action) {
         y: src.y + stepVector.y
     }
     let valid = yield isDestinationValid(step)
-    for (let i = 0; i < 10 && !valid; i++) {
+    /* for (let i = 0; i < 10 && !valid; i++) {
         yield delay(100)
         valid = yield isDestinationValid(step)
-    }
+    } */
     if (valid) {
-        yield put(move(src, step))
+        yield put(reserve(id, step))
+        yield put(move(id, src, step))
         if (step.x !== dest.x || step.y !== dest.y) {
             yield delay(200)
-            yield put(commandMove(step, dest))
+            yield put(commandMove(id, dest))
         }
     }
 }
 
 function* isDestinationValid(dest) {
-    return yield select(state => !state.pieces.pieces.some(p => p.point.x === dest.x && p.point.y === dest.y))
+    const key = dest.x + "," + dest.y;
+    const square = yield select(state => state.map.board.get(key));
+    return !square.occupied;
 }

@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-import config from "./config";
-import pieces from "./pieces";
+import map from "./map.reducer";
 
-export default combineReducers({ config, pieces });
+export default combineReducers({ map });

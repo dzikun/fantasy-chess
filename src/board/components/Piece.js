@@ -1,6 +1,6 @@
 import React from 'react';
 import './Piece.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { touch } from '../actions'
 
 function Piece(props) {
@@ -9,7 +9,8 @@ function Piece(props) {
         ? piece.name
         : '';
 
-    const cssClass = (piece && piece.selected)
+    const selected = useSelector(state => state.map.selected.contains(piece.id));
+    const cssClass = (piece && props.selected)
         ? "piece selected"
         : "piece";
 
@@ -19,7 +20,7 @@ function Piece(props) {
     }
 
     return (
-        <button className={cssClass} onClick={handleClick}>
+        <button key={piece.id} className={cssClass} onClick={handleClick}>
             {pieceName}
         </button>
     );
