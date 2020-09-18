@@ -1,10 +1,11 @@
-import { all, takeLatest, select, put, takeEvery, delay } from "redux-saga/effects";
+import { all, takeLatest, select, put, takeEvery, delay, actionChannel } from "redux-saga/effects";
 import { COMMAND_MOVE_SELECTED, COMMAND_MOVE, commandMove, move, reserve } from "../actions"
 
 export function* gameSaga() {
+    const moveChannel = yield actionChannel(COMMAND_MOVE)
     yield all([
         takeLatest(COMMAND_MOVE_SELECTED, moveSelectedSaga),
-        takeEvery(COMMAND_MOVE, movePieceSaga)
+        takeEvery(moveChannel, movePieceSaga)
     ]);
 }
 
@@ -32,12 +33,13 @@ function* movePieceSaga(action) {
         y: src.y + stepVector.y
     }
     let valid = yield isDestinationValid(step)
-    /* for (let i = 0; i < 10 && !valid; i++) {
-        yield delay(100)
-        valid = yield isDestinationValid(step)
-    } */
+    // for (let i = 0; i < 10 && !valid; i++) {
+    //     yield delay(100)
+    //     valid = yield isDestinationValid(step)
+    // }
     if (valid) {
         yield put(reserve(id, step))
+        // yield delay(50)
         yield put(move(id, src, step))
         if (step.x !== dest.x || step.y !== dest.y) {
             yield delay(200)

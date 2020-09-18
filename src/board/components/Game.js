@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import './Game.css';
 import Board from './Board';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { init, place } from '../actions';
+import Piece from './Piece';
+import { getFloatyPieces } from '../selectors';
 
 function Game(props) {
     const dispatch = useDispatch();
@@ -13,10 +15,15 @@ function Game(props) {
         dispatch(place(3, {x: 1, y: 3}));
     }, [dispatch]);
 
+    const floatyPieces = useSelector(getFloatyPieces)
+
     return (
         <div className="game">
             <div className="game-board">
                 <Board />
+                {floatyPieces.map(p => {
+                    return (<Piece key={p.id} piece={p} />);
+                })}
             </div>
         </div>
     );

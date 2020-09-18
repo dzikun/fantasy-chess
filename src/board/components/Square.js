@@ -8,9 +8,12 @@ function Square(props) {
     //const piece = useSelector(state => state.pieces.pieces.find(p => props.point.x === p.point.x && props.point.y === p.point.y));
     const squareKey = props.point.x + "," + props.point.y;
     const square = useSelector(state => state.map.board.get(squareKey));
-    const piece = useSelector(state => square && square.occupied ?
+    let piece = useSelector(state => square && square.occupied ?
         state.map.pieces.get(square.occupied)
         : null);
+    if (piece && piece.floaty) {
+        piece = null;
+    }
     const pieceComponent = piece
         ? (<Piece piece={piece} point={props.point} />)
         : null;
